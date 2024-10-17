@@ -1,20 +1,20 @@
 const mongoose = require('mongoose');
-const User = require('../models/User');  // Correct import
-const Product = require('../models/Product');  // Correct import
-const Order = require('../models/Order');  // Correct import
+const User = require('../models/User');
+const Product = require('../models/Product');
+const Order = require('../models/Order');
 
 require('dotenv').config();
 
-const uri = ''  // Use the .env variable for the connection string
+const uri = ''
 console.log('MongoDB URI:', uri);
 
 const insertData = async () => {
     try {
-        await mongoose.connect(uri);  // Removed deprecated options
+        await mongoose.connect(uri);
         console.log('MongoDB connected!');
 
         // Insert a new user
-        const user = await User.create({ name: 'Alice', email: 'alice@example.com', password: 'password123' }); // Added password
+        const user = await User.create({ name: 'Alice', email: 'alice@example.com', password: 'password123' });
         console.log('User created:', user);
 
         // Insert a new product
@@ -22,7 +22,7 @@ const insertData = async () => {
             name: 'Sticker Pack',
             description: 'A pack of fun stickers.',
             price: 9.99,
-            stock: 100,  // Ensure this field is present in the schema and in the insert
+            stock: 100,
             imageUrl: 'http://example.com/sticker-pack.jpg'
         });
         console.log('Product created:', product);
@@ -52,4 +52,25 @@ const insertData = async () => {
     }
 };
 
-insertData();
+const insertProduct = async () => {
+    await mongoose.connect(uri);
+    console.log('MongoDB connected!');
+
+    const product = await Product.create({
+        name: 'Dodgers',
+        description: "ITFDB",
+        price: 1,
+        stock: 200,
+        imageUrl: 'https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'
+    },
+    {
+        name: 'Luke Skywalker',
+        description: "Use the force1",
+        price: 1.99,
+        stock: 100,
+        imageUrl: 'https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'
+    })
+    console.log("Product created: " + product);
+}
+insertProduct();
+//insertData();
