@@ -32,7 +32,7 @@ const createSticker = async (req, res) => {
         });
         res.status(200).json(product)
     } catch (error) {
-        res.status(500).json({message: "Creating a sticker failed"})
+        res.status(500).json({message: "Creating a sticker failed", error})
     }
 }
 
@@ -43,7 +43,7 @@ const findStickerByIdAndUpdate = async (req,res) => {
         const updateProduct = await Product.findByIdAndUpdate(productId);
         res.status(200).json({message: "Product updated!"}).json(updateProduct);
     } catch (error) {
-        res.status(500).json({message: "Update failed"});
+        res.status(500).json({message: "Update failed", error});
     }
 };
 
@@ -53,7 +53,7 @@ const getStickersByCategory = async (req, res) => {
         const products = await Product.find({categories: category});
         res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({message: "category search failed"});
+        res.status(500).json({message: "category search failed", error});
     }
 };
 
@@ -63,7 +63,7 @@ const deleteStickerById = async (req, res) => {
         const deleteProduct = await Product.deleteOne({ _id: productId});
         res.status(500).json({message: "Product deleted"});
     } catch (error) {
-        res.status(500).json({message: "Delete failed"});
+        res.status(500).json({message: "Delete failed", error});
     }
 };
 
@@ -86,6 +86,24 @@ const getPaginatedStickers = async (req, res) => {
     }
 };
 
+const searchStickers = async (req, res) => {
+    try {
+        const { query } = req.query;
+        const filter = {};
+        if (query) {
+            filter.$or = [
+                { name: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } },
+                { categories: { $regex: query, $options: 'i' } }
+            ];
+        }
+        const products = await Product.find(filter);
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: "Error searching stickers", error });
+    }
+};
+
 module.exports = {
     getAllStickers, 
     getStickerById,
@@ -93,5 +111,6 @@ module.exports = {
     deleteStickerById, 
     findStickerByIdAndUpdate, 
     getStickersByCategory,
-    getPaginatedStickers
+    getPaginatedStickers,
+    searchStickers
 }

@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const stickerContoller = require("../controllers/stickerContoller");
+const stickerController = require("../controllers/stickerContoller");
 
-router.get("/", stickerContoller.getAllStickers);
-router.get("/product/:id", stickerContoller.getStickerById);
-router.post("/product", stickerContoller.createSticker);
-router.delete("/product/:id", stickerContoller.deleteStickerById);
-router.put("/product/:id", stickerContoller.findStickerByIdAndUpdate);
-router.get("/category", stickerContoller.getStickersByCategory);
-router.get("/stickers", stickerContoller.getPaginatedStickers);
+router.get("/", stickerController.getAllStickers);
+router.get("/product/:id", stickerController.getStickerById);
+router.post("/product", stickerController.createSticker);
+router.delete("/product/:id", stickerController.deleteStickerById);
+router.put("/product/:id", stickerController.findStickerByIdAndUpdate);
+router.get("/category", stickerController.getStickersByCategory);
+router.get("/stickers", stickerController.getPaginatedStickers);
+router.get("/search", stickerController.searchStickers);
 
 module.exports = router;
