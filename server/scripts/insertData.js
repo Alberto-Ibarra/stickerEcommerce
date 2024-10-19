@@ -8,6 +8,7 @@ require('dotenv').config();
 const uri = ''
 console.log('MongoDB URI:', uri);
 
+//insert user, product, and order
 const insertData = async () => {
     try {
         await mongoose.connect(uri);
@@ -52,25 +53,72 @@ const insertData = async () => {
     }
 };
 
+//insert products
 const insertProduct = async () => {
     await mongoose.connect(uri);
     console.log('MongoDB connected!');
 
     const product = await Product.create({
-        name: 'Dodgers',
-        description: "ITFDB",
-        price: 1,
-        stock: 200,
-        imageUrl: 'https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'
+        name: 'Yankees',
+        description: "There it goooooeeess, cya!",
+        price: 2.99,
+        stock: 175,
+        imageUrl: ['https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'],
+        categories: ['Sports', 'Baseball']
     },
     {
-        name: 'Luke Skywalker',
-        description: "Use the force1",
+        name: 'Star Wars',
+        description: "Use the force!",
         price: 1.99,
         stock: 100,
-        imageUrl: 'https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'
-    })
-    console.log("Product created: " + product);
-}
+        imageUrl: ['https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'],
+        categories: ['Movies', 'Sci-Fi']
+    },
+    {
+        name: 'Harry Potter',
+        description: "You're a wizard, Harry!",
+        price: .99,
+        stock: 100,
+        imageUrl: ['https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'],
+        categories: ['Movies', 'Sci-Fi', 'Wizard']
+    },
+    {
+        name: 'Harry Potter',
+        description: "You're a wizard, Harry!",
+        price: .99,
+        stock: 100,
+        imageUrl: ['https://i.ebayimg.com/images/g/qngAAOSwBahh7GJL/s-l960.png'],
+        categories: ['Movies', 'Sci-Fi', 'Wizard']
+    });
+    console.log("Products created: ", product);
+};
+
+
+//update stock and categories
+const updateAllProducts = async (newStock, newCategories) => {
+    try {
+        await mongoose.connect(uri);
+        console.log('MongoDB connected!');
+
+        const products = await Product.updateMany(
+            {},  // Update all documents
+            {
+                $set: {
+                    stock: newStock,
+                    categories: newCategories
+                }
+            }
+        );
+        
+        console.log('All products updated with new stock and categories:', products);
+    } catch (error) {
+        console.error('Error updating products:', error);
+    } finally {
+        await mongoose.connection.close();
+        console.log('MongoDB connection closed.');
+    }
+};
+
 insertProduct();
+//updateAllProducts(500, ['Stickers', 'Trending']);
 //insertData();
