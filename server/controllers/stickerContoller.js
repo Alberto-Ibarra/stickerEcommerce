@@ -68,13 +68,11 @@ const deleteStickerById = async (req, res) => {
 };
 
 const getPaginatedStickers = async (req, res) => {
-    const { page = 1, limit = 2 } = req.query;
-    const skip = (page - 1) * limit;
-
     try {
+        const { page = 1, limit = 2 } = req.query;
+        const skip = (page - 1) * limit;
         const stickers = await Product.find().skip(Number(skip)).limit(Number(limit));
         const total = await Product.countDocuments();
-
         res.status(200).json({
             total,
             page: Number(page),
