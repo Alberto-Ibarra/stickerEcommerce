@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const firebaseApp = require('./config/firebase');
+const cookieParser = require('cookie-parser');
 
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 const stickerRoutes = require("./routes/stickerRoutes");
 const userRoutes = require("./routes/userRoutes");

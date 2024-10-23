@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
         }
 
         const idToken = await firebaseUser.getIdToken();
-        res.cookie('session', idToken, {httpOnly: true, secure: true, maxAge: 3600000})
+        res.cookie('session', idToken, {httpOnly: true, secure: false, maxAge: 3600000})
 
         res.status(200).json({
             message: `Welcome, ${user.firstName}`,
