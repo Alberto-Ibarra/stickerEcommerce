@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
         }
 
         const idToken = await firebaseUser.getIdToken();
-        res.cookie('session', idToken, {httpOnly: true, secure: true, maxAge: 360000})
+        res.cookie('session', idToken, {httpOnly: true, secure: true, maxAge: 3600000})
 
         res.status(200).json({
             message: `Welcome, ${user.firstName}`,
@@ -60,38 +60,6 @@ const loginUser = async (req, res) => {
         res.status(500).json({ message: "Login failed", error});
     }
 }
-
-const refreshToken = async (req, res) => {
-    const { token } = req.body; // Expecting the refresh token in the request body
-
-    if (!token) {
-        return res.status(401).json({ message: 'Refresh Token Required' });
-    }
-
-    // Verify the refresh token
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Adjust this based on how you handle refresh tokens
-
-        // Find the user associated with the refresh token (if needed)
-        const user = await User.findById(decoded.userId);
-        if (!user) {
-            return res.status(403).json({ message: 'User not found' });
-        }
-
-        // Generate new access token
-        const newAccessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '15m' }); // Set expiration time
-
-        // Optionally issue a new refresh token and save it to the user (if you're using a database for storing refresh tokens)
-
-        res.status(200).json({
-            accessToken: newAccessToken,
-            // refreshToken: newRefreshToken, // If you create a new refresh token
-        });
-    } catch (error) {
-        console.error("Error refreshing token:", error);
-        return res.status(403).json({ message: 'Invalid Refresh Token' });
-    }
-};
 
 const getAllUsers = async (req, res) => {
     try {
@@ -105,6 +73,5 @@ const getAllUsers = async (req, res) => {
 module.exports = {
     registerUser,
     getAllUsers,
-    loginUser,
-    refreshToken
+    loginUser
 };
