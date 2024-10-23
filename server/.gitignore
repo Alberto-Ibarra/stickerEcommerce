@@ -35,3 +35,6 @@ coverage/
 
 # Windows system files
 Thumbs.db
+
+# Service account key
+serviceAccountKey.json
