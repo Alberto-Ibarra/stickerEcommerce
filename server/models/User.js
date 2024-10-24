@@ -17,13 +17,6 @@ const userSchema = new mongoose.Schema({
             message: props => `${props.value} is not a valid email!`
         }
     },
-    address:{
-        street: String,
-        unit: String,
-        city: String,
-        state: String,
-        postalCode: String,
-    },
     isAdmin: {type: Boolean, default: false},
     createdAt: {type: Date, default: Date.now}
 });
