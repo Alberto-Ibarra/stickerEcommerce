@@ -3,8 +3,8 @@ const Address = require('../models/Address');
 const createAddress = async (req, res) => {
     try {
         const {street, unit, city, state, postalCode} = req.body;
-
         const userId = req.user.user_id;
+
         if(!userId){
             return res.status(400).json({message: "User Id is required"})
         }

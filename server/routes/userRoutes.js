@@ -8,7 +8,7 @@ router.post("/signup", userController.registerUser);
 router.post("/login", userController.loginUser);
 
 //protected routes
-router.use(verifySession);
+//router.use(verifySession);
 router.get("/users", userController.getAllUsers);
 
 module.exports = router;
